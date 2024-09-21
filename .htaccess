@@ -1,0 +1,19 @@
+<IfModule mod_rewrite.c>
+   RewriteEngine On
+   # Force SSL
+   RewriteCond %{HTTPS} !=on
+   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+   # Remove public folder from URL
+   RewriteRule ^(.*)$ public/$1 [L]
+
+   # Add the following lines to allow loading of CSS and other static files
+   RewriteCond %{REQUEST_FILENAME} !-f
+   RewriteCond %{REQUEST_FILENAME} !-d
+   RewriteRule ^(.*\.css)$ public/$1 [L]
+
+   # Redirect all requests to the Laravel index.php front controller
+   RewriteCond %{REQUEST_FILENAME} !-f
+   RewriteCond %{REQUEST_FILENAME} !-d
+   RewriteRule ^(.*)$ index.php/$1 [L]
+</IfModule>
